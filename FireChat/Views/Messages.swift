@@ -21,40 +21,52 @@ struct Messages: View {
     }
     
     var body: some View {
-        VStack {
-            
-            List(viewModel.messages) { message in
-                HStack {
+            VStack {
+                Text("Join Code: \(String(chatroom.joinCode))")
+                    .bold()
+                List(viewModel.messages) { message in
+                    HStack {
+                            
+                        if message.name == Auth.auth().currentUser!.email{
+                            
+                            RightMessage(content: message.content, name: message.name)
+                                
+                                
+                        }
+                        else{
+                            LeftMessage(content: message.content, name: message.name)
+                            
+                        }
                         
-                    if message.name == Auth.auth().currentUser!.email{
-                        VStack (alignment: .trailing, content: {
-                            Text(message.content)
-                                .padding()
-                                .font(.system(size: 20))
-                            Text(message.name)
-                                .font(.system(size: 10))
-                            Spacer()
-                        })
-                    }
-                    else{
+                        }
                         
-                    }
-                    }
-                    
                 }
-            }
+                
+                .listStyle(PlainListStyle())
+                .buttonStyle(NoButtonStyle())
+                }
             HStack {
                 TextField("Enter message...", text: $messageField)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(10)
+                    .background(Color(red: 233.0/255, green: 234.0/255, blue: 243.0/255))
+                    .cornerRadius(25)
+                    .foregroundColor(Color.black)
                 Button(action: {
-                    viewModel.sendMessage(messageContent: messageField, docId: chatroom.id)
+                    if messageField != ""{
+                        viewModel.sendMessage(messageContent: messageField, docId: chatroom.id)}
+                        messageField = ""
+                    
                 }, label: {
-                    Text("Send")
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(.blue)
                 })
             }
-            .navigationBarTitle(String(chatroom.joinCode))
-        }
-            
+        
+        
+            .padding(.horizontal)
+            .navigationBarTitle(String(chatroom.title))
+    }
+        
     }
 
 
@@ -65,3 +77,68 @@ struct Messages_Previews: PreviewProvider {
 }
 
 
+
+struct RightMessage: View {
+    let content:String
+    let name:String
+    var body: some View {
+    HStack {
+        Spacer()
+        VStack (alignment:.trailing){
+                    Text(content)
+                        .padding(10)
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                        .foregroundColor(.white)
+                    Text(name)
+                        .font(.system(size: 13))
+                        .foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
+
+
+
+
+struct LeftMessage: View {let content:String
+    let name:String
+    var body: some View {
+        HStack {
+            VStack (alignment: .leading){
+                        Text(content)
+                            .padding(10)
+                            .background(Color.gray)
+                            .cornerRadius(15)
+                            .foregroundColor(.white)
+                        Text(name)
+                            .font(.system(size: 13))
+                            .foregroundColor(.secondary)
+                }
+            Spacer()
+            }
+        }
+    }
+
+
+struct RoundedCornersShape: Shape {
+    let corners: UIRectCorner
+    let radius: CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect,
+                                    byRoundingCorners: corners,
+                                    cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+    
+
+}
+
+struct NoButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+    }
+    
+}

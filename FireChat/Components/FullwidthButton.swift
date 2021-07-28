@@ -17,11 +17,11 @@ struct FullwidthButton: View {
         }) {
             ZStack {
                 Rectangle()
-                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .foregroundColor(.white)
                     .frame(height: 45)
                     .cornerRadius(8.0)
                 Text(label)
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("Color1"))
                     .fontWeight(.semibold)
             }
         }

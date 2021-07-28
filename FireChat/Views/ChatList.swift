@@ -20,34 +20,37 @@ struct ChatList: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.chatrooms) { chatroom in
-                NavigationLink(destination: Messages(chatroom: chatroom)) {
-                    HStack {
-                        VStack {
-                            Text(chatroom.title)
+            ZStack{
+                Color("Color1").ignoresSafeArea()
+                List(viewModel.chatrooms) { chatroom in
+                    NavigationLink(destination: Messages(chatroom: chatroom)) {
+                        HStack {
+                            VStack {
+                                Text(chatroom.title)
+                            }
+                            Spacer()
                         }
-                        Spacer()
                     }
+                    .navigationBarTitle("Chatrooms")
+                    .navigationBarItems(trailing: Button(action: {
+                        self.joinModal = true
+                    }, label: {
+                        Image(systemName: "plus")
+                    }))
+                    .navigationBarItems(leading: Button(action: {
+                        session.isAnon = false
+                        session.signOut()
+                    }, label: {
+                        Text("LogOut")
+                    }))
+                    
+                    .sheet(isPresented: $joinModal, content: {
+                        Join(isOpen: $joinModal)
+                    })
                 }
-                .navigationBarTitle("Chatrooms")
-                .navigationBarItems(trailing: Button(action: {
-                    self.joinModal = true
-                }, label: {
-                    Image(systemName: "plus")
-                }))
-                .navigationBarItems(leading: Button(action: {
-                    session.isAnon = false
-                    session.signOut()
-                }, label: {
-                    Text("LogOut")
-                }))
-                
-                .sheet(isPresented: $joinModal, content: {
-                    Join(isOpen: $joinModal)
-                })
+                .background(Color("Color1"))
+            
             }
-            
-            
         }
         
     }

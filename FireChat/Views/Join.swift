@@ -20,6 +20,10 @@ struct Join: View {
                     Text("Join a chatroom")
                         .font(.title)
                     TextField("Enter your join code", text: $joinCode)
+                        .padding(10)
+                        .background(Color(red: 233.0/255, green: 234.0/255, blue: 243.0/255))
+                        .cornerRadius(8)
+                        .padding(.horizontal,40)
                     Button(action: {
                         viewModel.joinChatroom(code: joinCode, handler: {
                             self.isOpen = false
@@ -29,15 +33,21 @@ struct Join: View {
                     })
                 }
                 .padding(.bottom)
-                
+                Spacer()
+                    .frame(height:80)
                 VStack {
                     Text("Create a chatroom")
                         .font(.title)
                     TextField("Enter a new title", text: $newTitle)
+                        .padding(10)
+                        .background(Color(red: 233.0/255, green: 234.0/255, blue: 243.0/255))
+                        .cornerRadius(8)
+                        .padding(.horizontal,40)
                     Button(action: {
                         viewModel.createChatroom(title: newTitle, handler: {
                             self.isOpen = false
                         })
+                            
                     }, label: {
                         Text("Create")
                     })

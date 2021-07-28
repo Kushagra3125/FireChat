@@ -6,5 +6,5 @@ target 'FireChat' do
   use_frameworks!
 	pod 'Firebase/Auth'
 	pod 'Firebase/Firestore'
-
+  pod 'IQKeyboardManager'
 end

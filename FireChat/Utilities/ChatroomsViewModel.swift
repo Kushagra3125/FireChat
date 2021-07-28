@@ -60,7 +60,7 @@ class ChatroomsViewModel: ObservableObject {
     
     func joinChatroom(code: String, handler: @escaping () -> Void) {
         if (user != nil) {
-            db.collection("chatrooms").whereField("joinCode", isEqualTo: Int(code)).getDocuments() { (snapshot, error) in
+            db.collection("chatrooms").whereField("joinCode", isEqualTo: Int(code ?? "42709")).getDocuments() { (snapshot, error) in
                 if let error = error {
                     print("error getting documents! \(error)")
                 } else {
